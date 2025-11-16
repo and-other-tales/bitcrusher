@@ -7,27 +7,47 @@ set -e
 echo "Installing Bitcrusher GUI for GNOME..."
 echo ""
 
+SUDO_CMD=""
+if [[ $EUID -ne 0 ]]; then
+    if command -v sudo &> /dev/null; then
+        SUDO_CMD="sudo"
+    else
+        echo "Error: sudo is required to install system packages. Please rerun this script as root or install sudo."
+        exit 1
+    fi
+fi
+
+run_with_privileges() {
+    if [[ -n "$SUDO_CMD" ]]; then
+        "$SUDO_CMD" "$@"
+    else
+        "$@"
+    fi
+}
+
+PIP_INSTALL_FLAGS=(--user)
+
 install_pygobject_packages() {
     if command -v apt &> /dev/null; then
         echo "Detected apt-based system (Ubuntu/Debian/Pop/Mint)"
-        if ! sudo apt update; then
+        if ! run_with_privileges apt update; then
             return 1
         fi
-        if ! sudo apt install -y python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-adw-1; then
+        if ! run_with_privileges apt install -y python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-adw-1; then
             return 1
         fi
         # Development headers required for pip builds (best-effort)
-        sudo apt install -y libgirepository1.0-dev libcairo2-dev libgtk-4-dev libadwaita-1-dev build-essential pkg-config python3-dev >/dev/null 2>&1 || true
+        run_with_privileges apt install -y libgirepository1.0-dev libcairo2-dev libgtk-4-dev libadwaita-1-dev build-essential pkg-config python3-dev >/dev/null 2>&1 || true
         return 0
     elif command -v dnf &> /dev/null; then
         echo "Detected dnf-based system (Fedora/RHEL/CentOS)"
-        if ! sudo dnf install -y python3-gobject gtk4 libadwaita libadwaita-devel gobject-introspection-devel cairo-devel gcc pkgconf-pkg-config python3-devel; then
+        if ! run_with_privileges dnf install -y python3-gobject gtk4 libadwaita libadwaita-devel gobject-introspection-devel cairo-devel gcc pkgconf-pkg-config python3-devel; then
             return 1
         fi
         return 0
     elif command -v pacman &> /dev/null; then
         echo "Detected pacman-based system (Arch/Manjaro)"
-        if ! sudo pacman -S --needed --noconfirm python-gobject gtk4 libadwaita gobject-introspection cairo base-devel; then
+        if ! run_with_privileges pacman -S --needed --noconfirm python-gobject gtk4 libadwaita gobject-introspection cairo base-devel; then
             return 1
         fi
         return 0
@@ -38,10 +58,10 @@ install_pygobject_packages() {
 
 install_pygobject_with_pip() {
     echo "Attempting PyGObject installation via pip (fallback)"
-    if ! python3 -m pip install --user --upgrade pip setuptools wheel pycairo; then
+    if ! python3 -m pip install "${PIP_INSTALL_FLAGS[@]}" --upgrade pip setuptools wheel pycairo; then
         return 1
     fi
-    if ! python3 -m pip install --user --upgrade PyGObject; then
+    if ! python3 -m pip install "${PIP_INSTALL_FLAGS[@]}" --upgrade PyGObject; then
         return 1
     fi
     return 0
@@ -97,6 +117,18 @@ if ! command -v pip3 &> /dev/null && ! python3 -m pip --version &> /dev/null; th
     exit 1
 fi
 
+# Detect if we're running inside a virtual environment to decide pip scope
+if python3 - <<'PY' >/dev/null 2>&1; then
+import sys
+if getattr(sys, "base_prefix", sys.prefix) != sys.prefix:
+    raise SystemExit(0)
+if hasattr(sys, "real_prefix"):
+    raise SystemExit(0)
+raise SystemExit(1)
+PY
+    PIP_INSTALL_FLAGS=()
+fi
+
 # Check for Node.js
 if ! command -v node &> /dev/null; then
     echo "Error: Node.js is not installed"
@@ -113,7 +145,7 @@ ensure_pygobject
 # Install Python package
 echo ""
 echo "Installing Python package..."
-python3 -m pip install --user -e .
+python3 -m pip install "${PIP_INSTALL_FLAGS[@]}" -e . --no-deps
 
 # Install desktop entry
 echo "Installing desktop entry..."

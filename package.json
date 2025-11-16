@@ -1,0 +1,20 @@
+{
+  "name": "bitcrusher",
+  "version": "1.0.0",
+  "description": "A chiptune-style bitcrusher effect for WAV files",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "bitcrusher": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["audio", "bitcrusher", "chiptune", "wav", "effect"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-wav": "^0.0.2",
+    "commander": "^11.1.0"
+  }
+}

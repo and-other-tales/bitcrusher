@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Bitcrusher
+Comment=Apply chiptune-style bitcrusher effects to WAV files
+Exec=/home/david/bitcrusher/bitcrusher-gui.py
+Icon=audio-x-generic
+Terminal=false
+Categories=AudioVideo;Audio;AudioVideoEditing;
+Keywords=audio;bitcrusher;chiptune;retro;effect;

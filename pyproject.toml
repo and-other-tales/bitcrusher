@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bitcrusher"
+version = "1.0.0"
+description = "A chiptune-style bitcrusher effect for WAV files with GNOME GUI"
+authors = [
+    {name = "Bitcrusher", email = ""},
+]
+readme = "README.md"
+license = {text = "MIT"}
+keywords = ["audio", "bitcrusher", "chiptune", "wav", "effect", "gnome", "gtk"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Editors",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "PyGObject>=3.42.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/bitcrusher"
+
+[project.scripts]
+bitcrusher = "bitcrusher:main"
+
+[project.gui-scripts]
+bitcrusher-gui = "bitcrusher:main"
+
+[tool.setuptools]
+py-modules = ["bitcrusher"]

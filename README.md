@@ -17,7 +17,7 @@ Transform your audio into authentic retro gaming sounds with presets for classic
 
 ### GUI Installation (GNOME) 🖥️
 
-The GUI installer automatically installs PyGObject/GTK4 dependencies (apt/dnf/pacman with pip fallback):
+The GUI installer automatically installs PyGObject/GTK4 dependencies (apt/dnf/pacman + pip fallback for custom Python builds):
 
 ```bash
 git clone https://github.com/yourusername/bitcrusher.git
@@ -29,6 +29,7 @@ chmod +x install.sh
 After installation, you can:
 - Run from terminal: `bitcrusher`
 - Launch from GNOME Applications menu (search for "Bitcrusher")
+No manual package installation is required—the script handles distro packages, development headers, and pip wheels needed for `gi`.
 
 ### CLI-Only Installation 🧰
 
@@ -64,7 +65,7 @@ bitcrusher process input.wav output.wav --preset gameboy
 
 ### For GUI
 - Python 3.10+
-- PyGObject (GTK 4.0)
+- PyGObject (GTK 4.0) — installed automatically by `install.sh`
 - libadwaita
 - GNOME desktop environment
 

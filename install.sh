@@ -16,16 +16,18 @@ install_pygobject_packages() {
         if ! sudo apt install -y python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-adw-1; then
             return 1
         fi
+        # Development headers required for pip builds (best-effort)
+        sudo apt install -y libgirepository1.0-dev libcairo2-dev libgtk-4-dev libadwaita-1-dev build-essential pkg-config python3-dev >/dev/null 2>&1 || true
         return 0
     elif command -v dnf &> /dev/null; then
         echo "Detected dnf-based system (Fedora/RHEL/CentOS)"
-        if ! sudo dnf install -y python3-gobject gtk4 libadwaita; then
+        if ! sudo dnf install -y python3-gobject gtk4 libadwaita libadwaita-devel gobject-introspection-devel cairo-devel gcc pkgconf-pkg-config python3-devel; then
             return 1
         fi
         return 0
     elif command -v pacman &> /dev/null; then
         echo "Detected pacman-based system (Arch/Manjaro)"
-        if ! sudo pacman -S --noconfirm python-gobject gtk4 libadwaita; then
+        if ! sudo pacman -S --needed --noconfirm python-gobject gtk4 libadwaita gobject-introspection cairo base-devel; then
             return 1
         fi
         return 0
@@ -43,6 +45,37 @@ install_pygobject_with_pip() {
         return 1
     fi
     return 0
+}
+
+ensure_pygobject() {
+    echo ""
+    echo "Checking Python dependencies..."
+
+    if python3 -c "import gi" 2>/dev/null; then
+        echo "✓ PyGObject already installed"
+        return 0
+    fi
+
+    echo "PyGObject not found. Installing system packages..."
+    if install_pygobject_packages; then
+        if python3 -c "import gi" 2>/dev/null; then
+            echo "✓ PyGObject installed via system packages"
+            return 0
+        fi
+    else
+        echo "System package installation unavailable or failed (continuing with pip)."
+    fi
+
+    echo "Installing PyGObject for the current Python interpreter via pip..."
+    if install_pygobject_with_pip && python3 -c "import gi" 2>/dev/null; then
+        echo "✓ PyGObject installed via pip"
+        return 0
+    fi
+
+    echo ""
+    echo "Error: PyGObject installation failed even after automated attempts."
+    echo "Ensure GTK4/libadwaita development files are available and rerun this script."
+    exit 1
 }
 
 # Check if running on Linux
@@ -74,43 +107,13 @@ fi
 echo "Installing Node.js dependencies..."
 npm install
 
-# Check for PyGObject (GTK)
-echo ""
-echo "Checking Python dependencies..."
-
-if ! python3 -c "import gi" 2>/dev/null; then
-    echo ""
-    echo "PyGObject is not installed. Installing dependencies..."
-
-    if ! install_pygobject_packages; then
-        echo "Could not install PyGObject via the system package manager."
-        echo "Trying pip-based installation (may require build dependencies)..."
-        install_pygobject_with_pip || true
-    fi
-
-    if ! python3 -c "import gi" 2>/dev/null; then
-        echo ""
-        echo "Error: PyGObject installation failed"
-        echo "Please install PyGObject manually for your distribution."
-        echo ""
-        echo "Ubuntu/Debian:"
-        echo "  sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-adw-1"
-        echo ""
-        echo "Fedora:"
-        echo "  sudo dnf install python3-gobject gtk4 libadwaita"
-        echo ""
-        echo "Arch Linux:"
-        echo "  sudo pacman -S python-gobject gtk4 libadwaita"
-        exit 1
-    fi
-
-    echo "✓ PyGObject installed successfully"
-fi
+# Ensure PyGObject is present for the GUI
+ensure_pygobject
 
 # Install Python package
 echo ""
 echo "Installing Python package..."
-python3 -m pip install --user -e . --no-deps
+python3 -m pip install --user -e .
 
 # Install desktop entry
 echo "Installing desktop entry..."

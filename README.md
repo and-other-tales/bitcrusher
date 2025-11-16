@@ -1,9 +1,10 @@
 # Bitcrusher
 
-A command-line tool to apply bitcrusher effects to WAV files, creating authentic chiptune-style audio reminiscent of classic gaming consoles and retro computers.
+A GNOME application with GUI to apply bitcrusher effects to WAV files, creating authentic chiptune-style audio reminiscent of classic gaming consoles and retro computers.
 
 ## Features
 
+- **Native GNOME GUI** - Beautiful GTK4/libadwaita interface
 - Multiple classic console presets (Game Boy, NES, Sega Genesis, SNES, etc.)
 - Retro computer emulation (C64, Atari 2600)
 - Custom bit depth and sample rate reduction
@@ -15,48 +16,56 @@ A command-line tool to apply bitcrusher effects to WAV files, creating authentic
 
 ## Installation
 
+Run the installation script:
+
 ```bash
-npm install
+./install-gui.sh
 ```
+
+This will install all dependencies and set up the `bitcrusher` command.
 
 ## Usage
 
-### Basic Usage with Presets
+### GUI Application
 
-Process a WAV file using a preset:
+After installation, launch the GUI:
 
 ```bash
-npm start -- process input.wav -p gameboy
-npm start -- process input.wav -p nes
-npm start -- process input.wav -p sega
+bitcrusher
 ```
 
-Or if installed globally:
+Or search for "Bitcrusher" in your GNOME Applications menu.
+
+The GUI provides:
+- Easy file selection
+- Visual preset picker
+- Interactive parameter controls
+- Real-time status updates
+
+### Command-Line Usage (Advanced)
+
+You can also use the Node.js CLI directly for batch processing:
 
 ```bash
-bitcrusher process input.wav -p gameboy
+node index.js process input.wav -p gameboy
+node index.js process input.wav -p nes
+node index.js process input.wav -p sega
 ```
 
-### Specify Output File
+### CLI Examples
 
 ```bash
-npm start -- process input.wav output.wav -p c64
-```
+# Specify output file
+node index.js process input.wav output.wav -p c64
 
-### Custom Parameters
-
-```bash
-# 8-bit depth with 4x sample rate reduction
-npm start -- process input.wav -b 8 -s 4
+# Custom parameters: 8-bit depth with 4x sample rate reduction
+node index.js process input.wav -b 8 -s 4
 
 # Combine preset with custom mix
-npm start -- process input.wav -p nes -m 0.7
-```
+node index.js process input.wav -p nes -m 0.7
 
-### List All Available Presets
-
-```bash
-npm start -- presets
+# List all available presets
+node index.js presets
 ```
 
 ## Available Presets
@@ -76,12 +85,14 @@ npm start -- presets
 - **heavy** - Aggressive bitcrushed sound (6-bit, 8x reduction)
 - **extreme** - Maximum destruction (2-bit, 16x reduction)
 
-## Command-Line Options
+## Command-Line Reference
+
+For advanced users and batch processing:
 
 ### `process` command
 
 ```
-bitcrusher process <input> [output] [options]
+node index.js process <input> [output] [options]
 ```
 
 **Arguments:**
@@ -97,26 +108,10 @@ bitcrusher process <input> [output] [options]
 ### `presets` command
 
 ```
-bitcrusher presets
+node index.js presets
 ```
 
 Lists all available presets with descriptions and parameters.
-
-## Examples
-
-```bash
-# Game Boy style
-npm start -- process song.wav gameboy_version.wav -p gameboy
-
-# NES with 80% effect mix
-npm start -- process track.wav nes_track.wav -p nes -m 0.8
-
-# Custom extreme crushing
-npm start -- process audio.wav crushed.wav -b 3 -s 12
-
-# Subtle vintage effect
-npm start -- process vocals.wav vintage_vocals.wav -p mild
-```
 
 ## How It Works
 

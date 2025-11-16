@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Bitcrusher GUI Installation Script
+# Bitcrusher Installation Script
 
 set -e
 
@@ -16,6 +16,13 @@ fi
 # Check for Python
 if ! command -v python3 &> /dev/null; then
     echo "Error: Python 3 is not installed"
+    exit 1
+fi
+
+# Check for pip
+if ! command -v pip3 &> /dev/null && ! python3 -m pip --version &> /dev/null; then
+    echo "Error: pip is not installed"
+    echo "Install it with: sudo apt install python3-pip"
     exit 1
 fi
 
@@ -50,9 +57,10 @@ if ! python3 -c "import gi" 2>/dev/null; then
     exit 1
 fi
 
-# Make GUI script executable
-echo "Making GUI script executable..."
-chmod +x bitcrusher-gui.py
+# Install Python package
+echo ""
+echo "Installing Python package..."
+pip3 install --user -e .
 
 # Install desktop entry
 echo "Installing desktop entry..."
@@ -68,6 +76,9 @@ echo ""
 echo "✓ Installation complete!"
 echo ""
 echo "You can now:"
-echo "  1. Run the GUI directly: ./bitcrusher-gui.py"
+echo "  1. Run from command line: bitcrusher"
 echo "  2. Launch from GNOME Applications menu (search for 'Bitcrusher')"
+echo ""
+echo "Note: Make sure ~/.local/bin is in your PATH to use the 'bitcrusher' command."
+echo "Add this to your ~/.bashrc if needed: export PATH=\"\$HOME/.local/bin:\$PATH\""
 echo ""

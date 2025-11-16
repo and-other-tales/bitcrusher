@@ -4,9 +4,6 @@
   "description": "A chiptune-style bitcrusher effect for WAV files",
   "main": "index.js",
   "type": "module",
-  "bin": {
-    "bitcrusher": "./index.js"
-  },
   "scripts": {
     "start": "node index.js"
   },

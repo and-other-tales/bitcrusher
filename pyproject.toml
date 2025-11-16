@@ -7,7 +7,7 @@ name = "bitcrusher"
 version = "1.0.0"
 description = "A chiptune-style bitcrusher effect for WAV files with GNOME GUI"
 authors = [
-    {name = "Bitcrusher", email = ""},
+    {name = "David James Lennon", email = "david@othertales.co"},
 ]
 readme = "README.md"
 license = {text = "MIT"}

@@ -7,6 +7,44 @@ set -e
 echo "Installing Bitcrusher GUI for GNOME..."
 echo ""
 
+install_pygobject_packages() {
+    if command -v apt &> /dev/null; then
+        echo "Detected apt-based system (Ubuntu/Debian/Pop/Mint)"
+        if ! sudo apt update; then
+            return 1
+        fi
+        if ! sudo apt install -y python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-adw-1; then
+            return 1
+        fi
+        return 0
+    elif command -v dnf &> /dev/null; then
+        echo "Detected dnf-based system (Fedora/RHEL/CentOS)"
+        if ! sudo dnf install -y python3-gobject gtk4 libadwaita; then
+            return 1
+        fi
+        return 0
+    elif command -v pacman &> /dev/null; then
+        echo "Detected pacman-based system (Arch/Manjaro)"
+        if ! sudo pacman -S --noconfirm python-gobject gtk4 libadwaita; then
+            return 1
+        fi
+        return 0
+    fi
+
+    return 1
+}
+
+install_pygobject_with_pip() {
+    echo "Attempting PyGObject installation via pip (fallback)"
+    if ! python3 -m pip install --user --upgrade pip setuptools wheel pycairo; then
+        return 1
+    fi
+    if ! python3 -m pip install --user --upgrade PyGObject; then
+        return 1
+    fi
+    return 0
+}
+
 # Check if running on Linux
 if [[ "$OSTYPE" != "linux-gnu"* ]]; then
     echo "Error: This script is designed for Linux systems"
@@ -44,49 +82,25 @@ if ! python3 -c "import gi" 2>/dev/null; then
     echo ""
     echo "PyGObject is not installed. Installing dependencies..."
 
-    # Detect distribution and install accordingly
-    if [ -f /etc/os-release ]; then
-        . /etc/os-release
-        case "$ID" in
-            ubuntu|debian|linuxmint|pop)
-                echo "Detected Debian/Ubuntu-based system"
-                sudo apt update
-                sudo apt install -y python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-adw-1
-                ;;
-            fedora|rhel|centos)
-                echo "Detected Fedora/RHEL-based system"
-                sudo dnf install -y python3-gobject gtk4 libadwaita
-                ;;
-            arch|manjaro)
-                echo "Detected Arch-based system"
-                sudo pacman -S --noconfirm python-gobject gtk4 libadwaita
-                ;;
-            *)
-                echo "Unknown distribution: $ID"
-                echo "Please install PyGObject manually:"
-                echo ""
-                echo "Ubuntu/Debian:"
-                echo "  sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-adw-1"
-                echo ""
-                echo "Fedora:"
-                echo "  sudo dnf install python3-gobject gtk4 libadwaita"
-                echo ""
-                echo "Arch Linux:"
-                echo "  sudo pacman -S python-gobject gtk4 libadwaita"
-                echo ""
-                exit 1
-                ;;
-        esac
-    else
-        echo "Could not detect distribution"
-        echo "Please install PyGObject manually for your system"
-        exit 1
+    if ! install_pygobject_packages; then
+        echo "Could not install PyGObject via the system package manager."
+        echo "Trying pip-based installation (may require build dependencies)..."
+        install_pygobject_with_pip || true
     fi
 
-    # Verify installation
     if ! python3 -c "import gi" 2>/dev/null; then
         echo ""
         echo "Error: PyGObject installation failed"
+        echo "Please install PyGObject manually for your distribution."
+        echo ""
+        echo "Ubuntu/Debian:"
+        echo "  sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-adw-1"
+        echo ""
+        echo "Fedora:"
+        echo "  sudo dnf install python3-gobject gtk4 libadwaita"
+        echo ""
+        echo "Arch Linux:"
+        echo "  sudo pacman -S python-gobject gtk4 libadwaita"
         exit 1
     fi
 
@@ -96,7 +110,7 @@ fi
 # Install Python package
 echo ""
 echo "Installing Python package..."
-pip3 install --user -e .
+python3 -m pip install --user -e . --no-deps
 
 # Install desktop entry
 echo "Installing desktop entry..."

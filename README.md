@@ -1,10 +1,10 @@
-# Bitcrusher
+# Bitcrusher 🎛️
 
 A chiptune-style bitcrusher audio effect for WAV files with both CLI and GNOME GUI interfaces.
 
 Transform your audio into authentic retro gaming sounds with presets for classic consoles like Game Boy, NES, Sega Genesis, SNES, and vintage computers like Commodore 64 and Atari 2600.
 
-## Features
+## Features ✨
 
 - **Multiple Interfaces**: Command-line tool and beautiful GNOME GUI
 - **Classic Console Presets**: Authentic sound profiles for Game Boy, NES, Sega Genesis, SNES, C64, Atari 2600
@@ -13,24 +13,24 @@ Transform your audio into authentic retro gaming sounds with presets for classic
 - **Modern & Retro Modes**: From subtle vintage warmth to extreme lo-fi destruction
 - **Stereo Support**: Process both mono and stereo WAV files
 
-## Installation
+## Installation 🚀
 
-### GUI Installation (GNOME)
+### GUI Installation (GNOME) 🖥️
 
-The GUI installer will automatically install all dependencies including PyGObject and GTK4:
+The GUI installer automatically installs PyGObject/GTK4 dependencies (apt/dnf/pacman with pip fallback):
 
 ```bash
 git clone https://github.com/yourusername/bitcrusher.git
 cd bitcrusher
-chmod +x install-gui.sh
-./install-gui.sh
+chmod +x install.sh
+./install.sh
 ```
 
 After installation, you can:
 - Run from terminal: `bitcrusher`
 - Launch from GNOME Applications menu (search for "Bitcrusher")
 
-### CLI-Only Installation
+### CLI-Only Installation 🧰
 
 For command-line only (no GUI):
 
@@ -56,7 +56,7 @@ npm link
 bitcrusher process input.wav output.wav --preset gameboy
 ```
 
-## Requirements
+## Requirements ⚙️
 
 ### For CLI
 - Node.js 14+
@@ -73,9 +73,9 @@ The install script automatically detects and installs GUI dependencies on:
 - Fedora/RHEL/CentOS
 - Arch Linux/Manjaro
 
-## Usage
+## Usage 🎚️
 
-### GUI Usage
+### GUI Usage 🖱️
 
 1. Launch Bitcrusher from Applications menu or run `bitcrusher` in terminal
 2. Select an input WAV file
@@ -86,7 +86,7 @@ The install script automatically detects and installs GUI dependencies on:
 4. Optionally change output filename
 5. Click "Process Audio"
 
-### CLI Usage
+### CLI Usage 💻
 
 #### Basic Usage
 
@@ -132,7 +132,7 @@ Options:
   -h, --help                 Display help
 ```
 
-## Presets
+## Presets 🎮
 
 ### Classic Consoles
 
@@ -158,7 +158,7 @@ Options:
 | `heavy` | Aggressive bitcrushed sound | 6-bit, 8x reduction, 5kHz LP, clipping |
 | `extreme` | Maximum destruction | 2-bit, 16x reduction, 2kHz LP, clipping, mono |
 
-## Examples
+## Examples 🎶
 
 ```bash
 # Make your track sound like a Game Boy game
@@ -174,7 +174,7 @@ bitcrusher process vocals.wav vocals_lofi.wav -b 6 -s 8 -m 0.5
 bitcrusher process drums.wav drums_crushed.wav --preset extreme
 ```
 
-## Technical Details
+## Technical Details 🔧
 
 The bitcrusher effect works by:
 
@@ -191,9 +191,9 @@ The bitcrusher effect works by:
 - Maintains original sample rate in output
 - Uses 32-bit float processing internally for quality
 
-## Development
+## Development 🧑‍💻
 
-### Project Structure
+### Project Structure 🗂️
 
 ```
 bitcrusher/
@@ -203,10 +203,10 @@ bitcrusher/
 ├── package.json           # Node.js dependencies
 ├── pyproject.toml         # Python package config
 ├── bitcrusher.desktop     # Desktop entry for GNOME
-└── install-gui.sh         # Automated installer
+└── install.sh             # Automated installer
 ```
 
-### Running Tests
+### Running Tests ✅
 
 ```bash
 # Node.js tests
@@ -216,11 +216,11 @@ npm test
 python3 test_bitcrusher_gui.py
 ```
 
-## License
+## License 📄
 
 MIT License - See LICENSE file for details
 
-## Contributing
+## Contributing 🤝
 
 Contributions welcome! Feel free to:
 - Report bugs
@@ -228,7 +228,7 @@ Contributions welcome! Feel free to:
 - Add new audio processing features
 - Improve documentation
 
-## Acknowledgments
+## Acknowledgments 🙏
 
 Inspired by the iconic sounds of:
 - Nintendo Game Boy (1989)

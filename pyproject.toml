@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bitcrusher"
-version = "1.0.0"
+version = "0.1.1"
 description = "A chiptune-style bitcrusher effect for WAV files with GNOME GUI"
 authors = [
     {name = "David James Lennon", email = "david@othertales.co"},

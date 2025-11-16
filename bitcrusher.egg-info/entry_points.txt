@@ -1,0 +1,5 @@
+[console_scripts]
+bitcrusher = bitcrusher:main
+
+[gui_scripts]
+bitcrusher-gui = bitcrusher:main

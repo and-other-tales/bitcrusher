@@ -37,7 +37,7 @@ install_pygobject_packages() {
             return 1
         fi
         # Development headers required for pip builds (best-effort)
-        run_with_privileges apt install -y libgirepository1.0-dev libcairo2-dev libgtk-4-dev libadwaita-1-dev build-essential pkg-config python3-dev >/dev/null 2>&1 || true
+        run_with_privileges apt install -y libgirepository-2.0-dev libgirepository1.0-dev gobject-introspection libcairo2-dev libgtk-4-dev libadwaita-1-dev build-essential pkg-config python3-dev >/dev/null 2>&1 || true
         return 0
     elif command -v dnf &> /dev/null; then
         echo "Detected dnf-based system (Fedora/RHEL/CentOS)"

@@ -1,6 +1,6 @@
 {
   "name": "bitcrusher",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "A chiptune-style bitcrusher effect for WAV files",
   "main": "index.js",
   "type": "module",

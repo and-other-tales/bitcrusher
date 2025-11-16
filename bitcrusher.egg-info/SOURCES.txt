@@ -1,0 +1,9 @@
+README.md
+bitcrusher.py
+pyproject.toml
+bitcrusher.egg-info/PKG-INFO
+bitcrusher.egg-info/SOURCES.txt
+bitcrusher.egg-info/dependency_links.txt
+bitcrusher.egg-info/entry_points.txt
+bitcrusher.egg-info/requires.txt
+bitcrusher.egg-info/top_level.txt

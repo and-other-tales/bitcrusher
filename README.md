@@ -238,3 +238,5 @@ Inspired by the iconic sounds of:
 - Super Nintendo (1990)
 - Commodore 64 (1982)
 - Atari 2600 (1977)
+
+Copyright (c) 2025 PI & Other Tales (David James Lennon)

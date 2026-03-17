@@ -1,5 +1,7 @@
 # Bitcrusher 🎛️
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A chiptune-style bitcrusher audio effect for WAV files with both CLI and GNOME GUI interfaces.
 
 Transform your audio into authentic retro gaming sounds with presets for classic consoles like Game Boy, NES, Sega Genesis, SNES, and vintage computers like Commodore 64 and Atari 2600.
